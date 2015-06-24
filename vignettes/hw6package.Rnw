@@ -1,0 +1,82 @@
+%\VignetteIndexEntry{hw6package package}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\selectlanguage{english}
+\usepackage{amsmath,amssymb,amsfonts}
+\RequirePackage{graphicx,verbatim,longtable}
+\usepackage{hyperref}
+\setlength{\pdfpagewidth}{\paperwidth}
+\setlength{\pdfpageheight}{\paperheight}
+
+\begin{document}
+
+\begin{center}
+	{\Huge Short \textsf{hw6package} guide}
+
+	\bigskip
+
+	{\LARGE Author: Lukasz Zaniewicz}
+\end{center}
+
+This package was made for homework 6 purposes.
+It consists of three \textsf{Rcpp}, functions
+
+\begin{itemize}
+\item \textsf{mode}
+\item \textsf{simplify2array}
+\item \textsf{ass}
+\end{itemize}
+
+At first we must remember about loading a package:
+<<message=FALSE>>=
+require(hw6package)
+@
+
+\subsection*{Task 1 - the \textsf{mode} function}
+
+This function determines the most frequently occurring value in an integer vector (mode). 
+Input is an integer vector and on output it produces a single integer value (mode)
+If mode is an ambiguous it returns the last one. 
+
+Below we present some simple examples:
+<<>>=
+mode(c(1,2,3,4,1))
+mode(c(1,2,3,4,1,3))
+@
+
+
+\subsection*{The \textsf{simplify2array} function}
+
+The \textsf{simplify2array} function simplifies the list of input integer vectors to a matrix, 
+where number of rows equals to length of the list and number of columns equals the length of each vector in the list.
+We assume that vectors have equal lengths.
+
+Below some example
+<<>>=
+simplify2array(list(1:2, 3:4))
+@
+
+Be carefull, function throw an error when input list contains vectors of nonequal lengths
+<<eval=FALSE>>=
+simplify2array(list(1:2, 3:4, 5:7))
+@ 
+
+
+\subsection*{The \textsf{ass} function}
+
+The \textsf{ass} function generates all possible 0-1 assignment
+vectors of 2*n survey participants in such a way that exactly n of them are assigned to group 0 (control)
+and the other n ones are assigned to group 1 (treatment).
+
+Usage examples:
+<<>>=
+ass(2)
+ass(3)
+@
+
+\end{document}

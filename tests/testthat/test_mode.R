@@ -1,0 +1,7 @@
+expect_equal(mode(list(1,2,3,1)), 1)
+expect_equal(mode(list(1,2,3,1,2)), 2)
+expect_error(mode("Ala ma kota"))
+expect_error(mode(1,2,"a"))
+expect_error(mode(as.data.frame(c(1)))
+expect_equal(length(mode(c(1,2,3,1))), 1)
+expect_is(mode(c(1,2,3,1)), "integer")

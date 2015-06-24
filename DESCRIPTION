@@ -1,0 +1,11 @@
+Package: hw6package
+Type: Package
+Title: Package build for homework 6 puproses
+Version: 1.0
+Date: 2015-06-22
+Author: Lukasz Zaniewicz
+Maintainer: Lukasz Zaniewicz <l.zaniewicz@phd.ipipan.waw.pl>
+Description: This package consists of solutions to tasks 1, 2 and 3. 
+License: GPL (>= 2)
+Imports: Rcpp (>= 0.11.6)
+LinkingTo: Rcpp

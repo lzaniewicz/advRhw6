@@ -1,0 +1,5 @@
+expect_is(ass(3), class="matrix")
+expect_error(ass("a"))
+expect_error(ass(c(1,1)))
+expect_that(dim(ass(3)), equals(c(factorial(6)/factorial(3)^2, 6)))
+expect_that(dim(ass(2)), equals(c(factorial(4)/factorial(2)^2, 4)))

@@ -1,0 +1,121 @@
+%\VignetteIndexEntry{hw6package package}
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\selectlanguage{english}
+\usepackage{amsmath,amssymb,amsfonts}
+\RequirePackage{graphicx,verbatim,longtable}
+\usepackage{hyperref}
+\setlength{\pdfpagewidth}{\paperwidth}
+\setlength{\pdfpageheight}{\paperheight}
+
+
+\begin{document}
+
+\begin{center}
+	{\Huge Very few benchmarks comparisons}
+
+	\bigskip
+
+	{\LARGE Author: Lukasz Zaniewicz}
+\end{center}
+
+
+\section{Task 1 - the \textsf{mode} function}
+
+At first we assume that \textsf{microbenchmark} package is loaded.
+<<message=FALSE>>=
+require(microbenchmark)
+@
+
+I was surprised that there is no ready-made function calculating mode i \textsf{R}, so in order 
+to perform those benchmarks I use first google result solution 
+
+<<message=FALSE>>=
+mode_r <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+@
+
+<<message=FALSE>>=
+x <- sample(c(1:50), 100, replace=TRUE)
+microbenchmark(mode(x), mode_r(x))
+@
+
+<<message=FALSE>>=
+x <- sample(c(1:5), 100, replace=TRUE)
+microbenchmark(mode(x), mode_r(x))
+@
+
+<<message=FALSE>>=
+x <- sample(c(1:50), 1000, replace=TRUE)
+microbenchmark(mode(x), mode_r(x))
+@
+
+And we see that my function performs worse in case of large sample :(
+
+\section{Task 2 - the \textsf{simplify2array} function}
+
+Now we move on to benchmarks of list-to-array simplifying function.
+At first we create simple auxillary function thta generates random integer vector.
+
+<<message=FALSE>>=
+aux_fun <- function(n) {
+  return(sample.int(50, n, TRUE))
+}
+x <- lapply(rep(5,5), aux_fun)
+microbenchmark(hw6package::simplify2array(x), simplify2array(x))
+@
+
+<<message=FALSE>>=
+x <- lapply(rep(100,100), aux_fun)
+microbenchmark(hw6package::simplify2array(x), simplify2array(x))
+@
+
+<<message=FALSE>>=
+x <- lapply(rep(1000,1000), aux_fun)
+microbenchmark(hw6package::simplify2array(x), simplify2array(x))
+@
+
+We see that on smaller sample our function performs slowly, but it  
+
+\section{Task 3 - the \textsf{ass} function}
+
+And now the last function. We compare our function to my own, very-fast-written
+survey assignment \textsf{R} function called \textsf{ass2}. 
+It uses \textsf{combn} function from \textsf{combinat} package.
+
+<<message=FALSE>>=
+require(combinat)
+ass2 <- function(n){
+  tt <- t(combn(2*n,n))
+  N <- nrow(tt)
+  res <- matrix(0,ncol=2*n, nrow=N)
+  
+  for (i in 1:N){
+    res[i,tt[i,]] <- 1
+  }
+  return(res)
+}
+@
+
+<<message=FALSE>>=
+microbenchmark(hw6package::ass(3), ass2(3))
+@
+
+<<message=FALSE>>=
+microbenchmark(hw6package::ass(5), ass2(5))
+@
+
+<<message=FALSE>>=
+microbenchmark(hw6package::ass(6), ass2(6))
+@
+
+And  we see that performance gap is really huge.
+
+\end{document}
